@@ -1,0 +1,6 @@
+{:database-name "library"
+ :user-name "root"
+ :password "root"
+ :adapter "mysql"
+ :server-name "localhost"
+ :init-file-name "init.sql"}

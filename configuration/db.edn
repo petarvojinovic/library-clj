@@ -1,0 +1,9 @@
+{:dbtype "mysql"
+ :dbname "library"
+ :user "root"
+ :password "root"
+ :host "localhost"
+ :port 3306
+ :subprotocol "mysql"
+ :subname "//localhost:3306/library"
+ :zeroDateTimeBehaviour "convertToNull"}
