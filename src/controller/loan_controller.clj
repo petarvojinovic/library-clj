@@ -1,20 +1,21 @@
 (ns controller.loan_controller
   (:require [ring.util.response :as response]
             [compojure.core :refer [defroutes GET POST PUT DELETE]]
-            [service.loan_service :as loan-service]))
+            [service.loan_service :as loan-service]
+            [cheshire.core :as json]))
 
-(defn convert-to-json-string [data]
-  (clojure.core/pr-str data))
+(defn serialize-to-pretty-json [data]
+  (json/generate-string data {:pretty true}))
 
 (defroutes loan-routes
            (GET "/loans" []
              (let [loans (loan-service/get-all-loans)
-                   json-string (convert-to-json-string loans)]
+                   json-string (serialize-to-pretty-json loans)]
                (response/response json-string)))
 
            (GET "/loans/:member_id/:book_id" [member_id book_id]
              (let [loan (loan-service/get-loan member_id book_id)
-                   json-string (convert-to-json-string loan)]
+                   json-string (serialize-to-pretty-json loan)]
                (response/response json-string)))
 
            (POST "/loans" request

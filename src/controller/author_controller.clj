@@ -1,20 +1,21 @@
 (ns controller.author_controller
   (:require [ring.util.response :as response]
             [compojure.core :refer [defroutes GET POST PUT DELETE]]
-            [service.author_service :as authors-service]))
+            [service.author_service :as authors-service]
+            [cheshire.core :as json]))
 
-(defn convert-to-json-string [data]
-  (clojure.core/pr-str data))
+(defn serialize-to-pretty-json [data]
+  (json/generate-string data {:pretty true}))
 
 (defroutes author-routes
            (GET "/authors" []
              (let [authors (authors-service/get-all-authors)
-                   json-string (convert-to-json-string authors)]
+                   json-string (serialize-to-pretty-json authors)]
                (response/response json-string)))
 
            (GET "/authors/:id" [id]
              (let [author (authors-service/get-author-by-id id)
-                   json-string (convert-to-json-string author)]
+                   json-string (serialize-to-pretty-json author)]
                (response/response json-string)))
 
            (POST "/authors" request
@@ -36,6 +37,6 @@
 
            (GET "/authors/:id/books" [id]
              (let [books (authors-service/get-books-by-author-id id)
-                   json-string (convert-to-json-string books)]
+                   json-string (serialize-to-pretty-json books)]
                (response/response json-string))))
 

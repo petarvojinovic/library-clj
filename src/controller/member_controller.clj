@@ -1,20 +1,21 @@
 (ns controller.member_controller
   (:require [ring.util.response :as response]
             [compojure.core :refer [defroutes GET POST PUT DELETE]]
-            [service.member_service :as member-service]))
+            [service.member_service :as member-service]
+            [cheshire.core :as json]))
 
-(defn convert-to-json-string [data]
-  (clojure.core/pr-str data))
+(defn serialize-to-pretty-json [data]
+  (json/generate-string data {:pretty true}))
 
 (defroutes member-routes
            (GET "/members" []
              (let [members (member-service/get-all-members)
-                   json-string (convert-to-json-string members)]
+                   json-string (serialize-to-pretty-json members)]
                (response/response json-string)))
 
            (GET "/members/:id" [id]
              (let [member (member-service/get-member-by-id id)
-                   json-string (convert-to-json-string member)]
+                   json-string (serialize-to-pretty-json member)]
                (response/response json-string)))
 
            (POST "/members" request

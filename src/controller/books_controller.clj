@@ -1,25 +1,26 @@
 (ns controller.books_controller
   (:require [ring.util.response :as response]
             [compojure.core :refer [defroutes GET POST PUT DELETE]]
-            [service.books_service :as books-service]))
+            [service.books_service :as books-service]
+            [cheshire.core :as json]))
 
-(defn convert-to-json-string [data]
-  (clojure.core/pr-str data))
+(defn serialize-to-pretty-json [data]
+  (json/generate-string data {:pretty true}))
 
 (defroutes book-routes
            (GET "/books" []
              (let [books (books-service/get-all-books)
-                   json-string (convert-to-json-string books)]
+                   json-string (serialize-to-pretty-json books)]
                (response/response json-string)))
 
            (GET "/books/:id" [id]
              (let [book (books-service/get-book-by-id id)
-                   json-string (convert-to-json-string book)]
+                   json-string (serialize-to-pretty-json book)]
                (response/response json-string)))
 
            (GET "/books/author/:author_id" [author_id]
              (let [books (books-service/get-books-by-author-id author_id)
-                   json-string (convert-to-json-string books)]
+                   json-string (serialize-to-pretty-json books)]
                (response/response json-string)))
 
            (POST "/books" request

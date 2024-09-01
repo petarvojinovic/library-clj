@@ -17,6 +17,7 @@
                  [uncomplicate/neanderthal "0.40.0"]
                  [net.mikera/core.matrix "0.62.0"]
                  [clj-time "0.15.2"]
+                 [cheshire "5.10.0"]
                  ]
   :plugins [[lein-ring "0.12.6"]]
   :ring {:handler library_clj.core/-main
