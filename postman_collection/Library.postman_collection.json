@@ -361,6 +361,34 @@
 					"response": []
 				},
 				{
+					"name": "Create Member Bad Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Filip Vukojevic\",\r\n  \"email\": \"filip.vukojevic@yahoo.com\",\r\n  \"phone\": \"060-1234\",\r\n  \"membership_start\": \"2024-01-01\",\r\n  \"membership_end\": \"2025-01-01\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8085/members",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"members"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Update Member",
 					"request": {
 						"method": "PUT",
@@ -448,7 +476,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"book_id\": 1,\r\n  \"member_id\": 1,\r\n  \"loan_date\": \"2024-01-01\",\r\n  \"return_date\": \"2024-01-15\"\r\n}",
+							"raw": "{\r\n  \"book_id\": 6,\r\n  \"member_id\": 1,\r\n  \"loan_date\": \"2024-01-01\",\r\n  \"return_date\": \"2024-01-15\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -456,12 +484,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8092/loans",
+							"raw": "http://localhost:8085/loans",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8092",
+							"port": "8085",
 							"path": [
 								"loans"
 							]

@@ -2,7 +2,8 @@
   (:require [ring.util.response :as response]
             [compojure.core :refer [defroutes GET POST PUT DELETE]]
             [service.member_service :as member-service]
-            [cheshire.core :as json]))
+            [cheshire.core :as json]
+            [validation.member_validation :as validation]))
 
 (defn serialize-to-pretty-json [data]
   (json/generate-string data {:pretty true}))
@@ -20,9 +21,14 @@
 
            (POST "/members" request
              (let [json-parsed (:body request)]
-               (let [{:keys [name email phone membership_start membership_end]} json-parsed]
-                 (member-service/create-member name email phone membership_start membership_end)
-                 (response/response "Member created successfully"))))
+               (let [{:keys [name email phone membership_start membership_end]} json-parsed
+                     validation-result (validation/validate-member json-parsed)]
+                 (if (= :ok (:status validation-result))
+                   (do
+                     (member-service/create-member name email phone membership_start membership_end)
+                     (response/response (serialize-to-pretty-json {:message "Member created successfully"})))
+                   (response/status
+                     (response/response (serialize-to-pretty-json validation-result)) 400)))))
 
            (PUT "/members/:id" request
              (let [json-parsed (:body request)
