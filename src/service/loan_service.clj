@@ -18,6 +18,9 @@
                    :return_date (format-date (:return_date %)))
          loans)))
 
+(defn loan-exists? [member_id book_id]
+  (not (empty? (jdbc/query db ["SELECT * FROM loans WHERE member_id = ? AND book_id = ?" member_id book_id]))))
+
 (defn get-loan [member_id book_id]
   (jdbc/query db ["SELECT * FROM loans WHERE member_id = ? AND book_id = ?" member_id book_id]))
 

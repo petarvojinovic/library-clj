@@ -2,7 +2,8 @@
   (:require [ring.util.response :as response]
             [compojure.core :refer [defroutes GET POST PUT DELETE]]
             [service.loan_service :as loan-service]
-            [cheshire.core :as json]))
+            [cheshire.core :as json]
+            [validation.loan_validation :as validation]))
 
 (defn serialize-to-pretty-json [data]
   (json/generate-string data {:pretty true}))
@@ -19,10 +20,15 @@
                (response/response json-string)))
 
            (POST "/loans" request
-             (let [json-parsed (:body request)]
-               (let [{:keys [member_id book_id loan_date return_date]} json-parsed]
-                 (loan-service/create-loan member_id book_id loan_date return_date)
-                 (response/response "Loan created successfully"))))
+             (let [json-parsed (:body request)
+                   {:keys [member_id book_id loan_date return_date]} json-parsed
+                   validation-result (validation/validate-loan json-parsed)]
+               (if (= :ok (:status validation-result))
+                 (do
+                   (loan-service/create-loan member_id book_id loan_date return_date)
+                   (response/response (serialize-to-pretty-json {:message "Loan created successfully"})))
+                 (response/status
+                   (response/response (serialize-to-pretty-json validation-result)) 400))))
 
            (PUT "/loans/:member_id/:book_id" request
              (let [json-parsed (:body request)
