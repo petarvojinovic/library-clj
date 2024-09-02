@@ -2,7 +2,8 @@
   (:require [ring.util.response :as response]
             [compojure.core :refer [defroutes GET POST PUT DELETE]]
             [service.books_service :as books-service]
-            [cheshire.core :as json]))
+            [cheshire.core :as json]
+            [validation.book_validation :as validation]))
 
 (defn serialize-to-pretty-json [data]
   (json/generate-string data {:pretty true}))
@@ -25,9 +26,14 @@
 
            (POST "/books" request
              (let [json-parsed (:body request)]
-               (let [{:keys [title genre year_published author_id]} json-parsed]
-                 (books-service/create-book title genre year_published author_id)
-                 (response/response "Book created successfully"))))
+               (let [{:keys [title genre year_published author_id]} json-parsed
+                     validation-result (validation/validate-book json-parsed)]
+                 (if (= :ok (:status validation-result))
+                   (do
+                     (books-service/create-book title genre year_published author_id)
+                     (response/response (serialize-to-pretty-json {:message "Book created successfully"})))
+                   (response/status
+                     (response/response (serialize-to-pretty-json validation-result)) 400)))))
 
            (PUT "/books/:id" request
              (let [json-parsed (:body request)
