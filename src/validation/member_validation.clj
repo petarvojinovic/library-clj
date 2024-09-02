@@ -13,6 +13,22 @@
 (s/def ::member (s/keys :req-un [::name ::email ::phone ::membership_start ::membership_end]))
 
 (defn validate-member [member-data]
-  (if (s/valid? ::member member-data)
-    {:status :ok}
-    {:status :error :message (s/explain-str ::member member-data)}))
+  (let [errors (cond-> {}
+                       (not (s/valid? ::name (get member-data :name)))
+                       (assoc :name "Username must be a non-empty string")
+
+                       (not (s/valid? ::email (get member-data :email)))
+                       (assoc :email "Email must be in a valid format")
+
+                       (not (s/valid? ::phone (get member-data :phone)))
+                       (assoc :phone "Phone number must be in the format 123-456-7890")
+
+                       (not (s/valid? ::date (get member-data :membership_start)))
+                       (assoc :membership_start "Membership start date must be in the format YYYY-MM-DD")
+
+                       (not (s/valid? ::date (get member-data :membership_end)))
+                       (assoc :membership_end "Membership end date must be in the format YYYY-MM-DD"))]
+
+    (if (empty? errors)
+      {:status :ok}
+      {:status :error :message errors})))
