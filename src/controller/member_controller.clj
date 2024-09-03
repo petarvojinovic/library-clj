@@ -3,7 +3,8 @@
             [compojure.core :refer [defroutes GET POST PUT DELETE]]
             [service.member_service :as member-service]
             [cheshire.core :as json]
-            [validation.member_validation :as validation]))
+            [validation.member_validation :as validation]
+            [service.recommendation_service :as recommendation-service]))
 
 (defn serialize-to-pretty-json [data]
   (json/generate-string data {:pretty true}))
@@ -39,4 +40,15 @@
 
            (DELETE "/members/:id" [id]
              (member-service/delete-member id)
-             (response/response "Member deleted successfully")))
+             (response/response "Member deleted successfully"))
+
+           (GET "/members/:id/recommendations" [id]
+             (let [recommendations (recommendation-service/recommend-books (Integer/parseInt id))
+                   books-with-author (map (fn [book]
+                                            (assoc book :author {:author_id (:author_id book)
+                                                                 :name (:author_name book)
+                                                                 :birth_year (:author_birth_year book)}))
+                                          recommendations)
+                   books-cleaned (map #(dissoc % :author_name :author_birth_year :author_id) books-with-author)
+                   json-string (serialize-to-pretty-json books-cleaned)]
+               (response/response json-string))))
