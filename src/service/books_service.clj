@@ -6,10 +6,16 @@
 (def db (edn/read-string (slurp "configuration/db.edn")))
 
 (defn get-all-books []
-  (jdbc/query db ["SELECT * FROM books"]))
+  (jdbc/query db ["SELECT books.*, authors.name AS author_name, authors.birth_year AS author_birth_year
+                   FROM books
+                   JOIN authors ON books.author_id = authors.id"]))
+
 
 (defn get-book-by-id [id]
-  (jdbc/query db ["SELECT * FROM books WHERE id = ?" id]))
+  (jdbc/query db ["SELECT books.*, authors.name AS author_name, authors.birth_year AS author_birth_year
+                   FROM books
+                   JOIN authors ON books.author_id = authors.id
+                   WHERE books.id = ?" id]))
 
 (defn create-book [title genre year_published author_id]
   (jdbc/execute! db
@@ -30,4 +36,11 @@
 
 ;; dobijan svih knjiga odredjenog autora
 (defn get-books-by-author-id [author_id]
-  (jdbc/query db ["SELECT * FROM books WHERE author_id = ?" author_id]))
+  (jdbc/query db ["SELECT books.*, authors.name AS author_name, authors.birth_year AS author_birth_year
+                   FROM books
+                   JOIN authors ON books.author_id = authors.id
+                   WHERE books.author_id = ?" author_id]))
+
+(defn author-exists? [author_id]
+  (let [author (first (jdbc/query db ["SELECT * FROM authors WHERE id = ?" author_id]))]
+    (not (nil? author))))

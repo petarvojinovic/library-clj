@@ -11,18 +11,41 @@
 (defroutes book-routes
            (GET "/books" []
              (let [books (books-service/get-all-books)
-                   json-string (serialize-to-pretty-json books)]
+                   books-with-author (map (fn [book]
+                                            (assoc book :author {:author_id (:author_id book)
+                                                                 :name (:author_name book)
+                                                                 :birth_year (:author_birth_year book)}))
+                                          books)
+                   books-cleaned (map #(dissoc % :author_name :author_birth_year :author_id) books-with-author)
+                   json-string (serialize-to-pretty-json books-cleaned)]
                (response/response json-string)))
 
            (GET "/books/:id" [id]
-             (let [book (books-service/get-book-by-id id)
-                   json-string (serialize-to-pretty-json book)]
-               (response/response json-string)))
+             (let [book (first (books-service/get-book-by-id id))]
+               (if book
+                 (let [book-with-author (assoc book :author {:author_id (:author_id book)
+                                                             :name (:author_name book)
+                                                             :birth_year (:author_birth_year book)})
+                       book-cleaned (dissoc book-with-author :author_name :author_birth_year :author_id)
+                       json-string (serialize-to-pretty-json book-cleaned)]
+                   (response/response json-string))
+                 (response/status (response/response "Book not found") 404))))
 
            (GET "/books/author/:author_id" [author_id]
-             (let [books (books-service/get-books-by-author-id author_id)
-                   json-string (serialize-to-pretty-json books)]
-               (response/response json-string)))
+             (if (books-service/author-exists? author_id)
+               (let [books (books-service/get-books-by-author-id author_id)]
+                 (if (empty? books)
+                   (response/status (response/response "No books found for this author") 404)
+                   (let [books-with-authors (map (fn [book]
+                                                   (assoc book :author {:author_id (:author_id book)
+                                                                        :name (:author_name book)
+                                                                        :birth_year (:author_birth_year book)}))
+                                                 books)
+                         books-cleaned (map #(dissoc % :author_name :author_birth_year :author_id) books-with-authors)
+                         json-string (serialize-to-pretty-json books-cleaned)]
+                     (response/response json-string))))
+               (response/status (response/response "Author not found") 404)))
+
 
            (POST "/books" request
              (let [json-parsed (:body request)]
