@@ -7,6 +7,155 @@
 	},
 	"item": [
 		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8085/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8085/user/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"user",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"fiketa\",\r\n  \"password\": \"fiketa123\",\r\n  \"name\": \"Filip Vukojevic\",\r\n  \"email\": \"filip.vukojevic@yahoo.com\",\r\n  \"phone\": \"060-555-5555\",\r\n  \"role\": \"member\",\r\n  \"membership_type\": \"yearly\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8085/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User Bad Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"fiketa\",\r\n  \"password\": \"fiketa\",\r\n  \"name\": \"Filip Vukojevic\",\r\n  \"email\": \"filip.vukojevic\",\r\n  \"phone\": \"060-555-5555\",\r\n  \"role\": \"member\",\r\n  \"membership_type\": \"yearly\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8085/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"fiketa123\",\r\n  \"password\": \"fiketa\",\r\n  \"name\": \"Filip Vukojevic\",\r\n  \"email\": \"filip.vukojevic@yahoo.com\",\r\n  \"phone\": \"060-555-5555\",\r\n  \"role\": \"member\",\r\n  \"membership_type\": \"yearly\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8085/user/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"user",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8085/user/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"user",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Authors",
 			"item": [
 				{
@@ -287,151 +436,22 @@
 						}
 					},
 					"response": []
-				}
-			]
-		},
-		{
-			"name": "Members",
-			"item": [
-				{
-					"name": "Get All Members",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8085/members",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8085",
-							"path": [
-								"members"
-							]
-						}
-					},
-					"response": []
 				},
 				{
-					"name": "Get Member By ID",
+					"name": "Return book",
 					"request": {
-						"method": "GET",
+						"method": "PATCH",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8085/members/1",
+							"raw": "http://localhost:8085/books/28",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8085",
 							"path": [
-								"members",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Member",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Filip Vukojevic\",\r\n  \"email\": \"filip.vukojevic@yahoo.com\",\r\n  \"phone\": \"060-555-5555\",\r\n  \"membership_start\": \"2024-01-01\",\r\n  \"membership_end\": \"2025-01-01\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8085/members",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8085",
-							"path": [
-								"members"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Member Bad Request",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Filip Vukojevic\",\r\n  \"email\": \"filip.vukojevic@yahoo.com\",\r\n  \"phone\": \"060-1234\",\r\n  \"membership_start\": \"2024-01-01\",\r\n  \"membership_end\": \"2025-01-01\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8085/members",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8085",
-							"path": [
-								"members"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update Member",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Filip Vukojevic\",\r\n  \"email\": \"filip.vukojevic@gmail.com\",\r\n  \"phone\": \"060-555-5555\",\r\n  \"membership_start\": \"2024-01-01\",\r\n  \"membership_end\": \"2025-09-09\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8085/members/5",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8085",
-							"path": [
-								"members",
-								"5"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Member",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8085/members/5",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8085",
-							"path": [
-								"members",
-								"5"
+								"books",
+								"28"
 							]
 						}
 					},
@@ -476,7 +496,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"book_id\": 6,\r\n  \"member_id\": 1,\r\n  \"loan_date\": \"2024-01-01\",\r\n  \"return_date\": \"2024-01-15\"\r\n}",
+							"raw": "{\r\n  \"book_id\": 4,\r\n  \"user_id\": 1,\r\n  \"loan_date\": \"2024-01-01\",\r\n  \"return_date\": \"2024-01-15\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -500,8 +520,21 @@
 				{
 					"name": "Delete Loan",
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8085/loans/4/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"loans",
+								"4",
+								"4"
+							]
+						}
 					},
 					"response": []
 				}
