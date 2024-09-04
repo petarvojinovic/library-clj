@@ -4,12 +4,12 @@
 
 (def db (edn/read-string (slurp "configuration/db.edn")))
 
-(defn get-books-loaned-by-member [member_id]
+(defn get-books-loaned-by-user [user_id]
   (jdbc/query db ["SELECT books.id, books.title, books.genre, authors.name AS author_name, authors.birth_year AS author_birth_year
                    FROM loans
                    JOIN books ON loans.book_id = books.id
                    JOIN authors ON books.author_id = authors.id
-                   WHERE loans.member_id = ?" member_id]))
+                   WHERE loans.user_id = ?" user_id]))
 
 (defn get-all-books []
   (jdbc/query db ["SELECT books.*, authors.name AS author_name, authors.birth_year AS author_birth_year
@@ -19,8 +19,8 @@
 (defn filter-books-by-genre [books genre]
   (filter #(= (:genre %) genre) books))
 
-(defn recommend-books [member_id]
-  (let [loaned-books (get-books-loaned-by-member member_id)
+(defn recommend-books [user_id]
+  (let [loaned-books (get-books-loaned-by-user user_id)
         all-books (get-all-books)
         genres (set (map :genre loaned-books))
         unread-books (remove #(some #{(:id %)} (map :id loaned-books)) all-books)

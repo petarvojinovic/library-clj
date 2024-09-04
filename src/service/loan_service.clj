@@ -18,24 +18,24 @@
                    :return_date (format-date (:return_date %)))
          loans)))
 
-(defn loan-exists? [member_id book_id]
-  (not (empty? (jdbc/query db ["SELECT * FROM loans WHERE member_id = ? AND book_id = ?" member_id book_id]))))
+(defn loan-exists? [user_id book_id]
+  (not (empty? (jdbc/query db ["SELECT * FROM loans WHERE user_id = ? AND book_id = ?" user_id book_id]))))
 
-(defn get-loan [member_id book_id]
-  (jdbc/query db ["SELECT * FROM loans WHERE member_id = ? AND book_id = ?" member_id book_id]))
+(defn get-loan [user_id book_id]
+  (jdbc/query db ["SELECT * FROM loans WHERE user_id = ? AND book_id = ?" user_id book_id]))
 
-(defn create-loan [member_id book_id loan_date return_date]
+(defn create-loan [user_id book_id loan_date return_date]
   (jdbc/execute! db
-                 ["INSERT INTO loans (member_id, book_id, loan_date, return_date)
+                 ["INSERT INTO loans (user_id, book_id, loan_date, return_date)
                   VALUES (?, ?, ?, ?)"
-                  member_id book_id loan_date return_date]))
+                  user_id book_id loan_date return_date]))
 
-(defn update-loan [member_id book_id loan_date return_date]
+(defn update-loan [user_id book_id loan_date return_date]
   (jdbc/execute! db
                  ["UPDATE loans
                   SET loan_date = ?, return_date = ?
-                  WHERE member_id = ? AND book_id = ?"
-                  loan_date return_date member_id book_id]))
+                  WHERE user_id = ? AND book_id = ?"
+                  loan_date return_date user_id book_id]))
 
-(defn delete-loan [member_id book_id]
-  (jdbc/execute! db ["DELETE FROM loans WHERE member_id = ? AND book_id = ?" member_id book_id]))
+(defn delete-loan [user_id book_id]
+  (jdbc/execute! db ["DELETE FROM loans WHERE user_id = ? AND book_id = ?" user_id book_id]))

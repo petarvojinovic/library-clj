@@ -3,7 +3,7 @@
             [clojure.edn :as edn]
             [controller.author_controller :as author-controller]
             [controller.books_controller :as books-controller]
-            [controller.member_controller :as member-controller]
+            [controller.user_controller :as user-controller]
             [controller.loan_controller :as loan-controller]
             [ring.adapter.jetty :as jetty]
             [compojure.core :refer [defroutes]]
@@ -33,7 +33,7 @@
 (defroutes app-routes
            author-controller/author-routes
            books-controller/book-routes
-           member-controller/member-routes
+           user-controller/user-routes
            loan-controller/loan-routes)
 
 (init)
