@@ -12,7 +12,7 @@
                        (assoc :name "Author name must be a non-empty string")
 
                        (not (s/valid? ::birth_year (get author-data :birth_year)))
-                       (assoc :birth_year "Birth year must be a valid four number integer"))]
+                       (assoc :birth_year "Invalid birth year"))]
 
     (if (empty? errors)
       {:status :ok}

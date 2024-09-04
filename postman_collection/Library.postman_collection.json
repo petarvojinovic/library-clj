@@ -164,14 +164,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8085/authors",
+							"raw": "http://localhost:8085/author",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8085",
 							"path": [
-								"authors"
+								"author"
 							]
 						}
 					},
@@ -183,15 +183,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8085/authors/2",
+							"raw": "http://localhost:8085/author/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8085",
 							"path": [
-								"authors",
-								"2"
+								"author",
+								"1"
 							]
 						}
 					},
@@ -203,14 +203,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8085/authors/1/books",
+							"raw": "http://localhost:8085/author/1/books",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8085",
 							"path": [
-								"authors",
+								"author",
 								"1",
 								"books"
 							]
@@ -225,7 +225,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Suzanne Collins\",\r\n  \"birth_year\": 1970\r\n}",
+							"raw": "{\r\n  \"name\": \"Suzanne Collins\",\r\n  \"birth_year\": 2003\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -233,14 +233,42 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8085/authors",
+							"raw": "http://localhost:8085/author",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8085",
 							"path": [
-								"authors"
+								"author"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Author Bad Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Suzanne Collins\",\r\n  \"birth_year\": 200\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8085/author",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"author"
 							]
 						}
 					},
@@ -261,15 +289,15 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8085/authors/7",
+							"raw": "http://localhost:8085/author/3",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8085",
 							"path": [
-								"authors",
-								"7"
+								"author",
+								"3"
 							]
 						}
 					},
@@ -281,15 +309,15 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8085/authors/7",
+							"raw": "http://localhost:8085/author/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8085",
 							"path": [
-								"authors",
-								"7"
+								"author",
+								"2"
 							]
 						}
 					},
