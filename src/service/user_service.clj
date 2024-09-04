@@ -12,6 +12,10 @@
 (defn get-user-by-id [id]
   (jdbc/query db ["SELECT * FROM user WHERE id = ?" id]))
 
+(defn get-members []
+  (jdbc/query db ["SELECT * FROM user WHERE role = ?" "member"]))
+
+
 (defn user-exists? [id]
   (not (empty? (jdbc/query db ["SELECT 1 FROM user WHERE id = ?" id]))))
 

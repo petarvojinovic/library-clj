@@ -18,6 +18,11 @@
                    json-string (serialize-to-pretty-json user)]
                (response/response json-string)))
 
+           (GET "/members" []
+             (let [members (user-service/get-members)
+                   json-string (serialize-to-pretty-json members)]
+               (response/response json-string)))
+
            (POST "/user" request
              (let [json-parsed (:body request)
                    creation-result (user-service/create-user json-parsed)]
