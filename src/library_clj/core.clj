@@ -2,7 +2,7 @@
   (:require [clojure.java.jdbc :as jdbc]
             [clojure.edn :as edn]
             [controller.author_controller :as author-controller]
-            [controller.books_controller :as books-controller]
+            [controller.book_controller :as book-controller]
             [controller.user_controller :as user-controller]
             [controller.loan_controller :as loan-controller]
             [ring.adapter.jetty :as jetty]
@@ -32,7 +32,7 @@
 
 (defroutes app-routes
            author-controller/author-routes
-           books-controller/book-routes
+           book-controller/book-routes
            user-controller/user-routes
            loan-controller/loan-routes)
 

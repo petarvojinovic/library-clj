@@ -152,6 +152,26 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get All Members",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8085/user/members",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"user",
+								"members"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -225,7 +245,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Suzanne Collins\",\r\n  \"birth_year\": 2003\r\n}",
+							"raw": "{\r\n  \"name\": \"Suzanne Collins\",\r\n  \"birth_year\": 2000\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -281,7 +301,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Suzanne Collins\",\r\n  \"birth_year\": 1980\r\n}",
+							"raw": "{\r\n  \"name\": \"Suzanne Collins\",\r\n  \"birth_year\": 1982\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -289,7 +309,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8085/author/3",
+							"raw": "http://localhost:8085/author/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -297,7 +317,7 @@
 							"port": "8085",
 							"path": [
 								"author",
-								"3"
+								"2"
 							]
 						}
 					},
@@ -334,14 +354,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8085/books",
+							"raw": "http://localhost:8085/book",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8085",
 							"path": [
-								"books"
+								"book"
 							]
 						}
 					},
@@ -353,14 +373,35 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8085/books/1",
+							"raw": "http://localhost:8085/book/3",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8085",
 							"path": [
-								"books",
+								"book",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Books By Author ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8085/book/author/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"book",
+								"author",
 								"1"
 							]
 						}
@@ -374,7 +415,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"Harry Potter and the Prisoner of Azkaban\",\r\n    \"genre\": \"Fantasy\",\r\n    \"year_published\": 1999,\r\n    \"author_id\": 1\r\n}",
+							"raw": "{\r\n    \"title\": \"proba\",\r\n    \"genre\": \"Fantasy\",\r\n    \"year_published\": 1992,\r\n    \"book_status\": \"loaned\",\r\n    \"author_id\": 1  \r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -382,14 +423,42 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8085/books",
+							"raw": "http://localhost:8085/book",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8085",
 							"path": [
-								"books"
+								"book"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Book Bad Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"proba\",\r\n    \"genre\": \"Fantasy\",\r\n    \"year_published\": 199,\r\n    \"book_status\": \"available\",\r\n    \"author_id\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8085/book",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"book"
 							]
 						}
 					},
@@ -402,7 +471,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"Harry Potter and the Prisoner of Azkaban\",\r\n    \"genre\": \"Classic\",\r\n    \"year_published\": 2025,\r\n    \"author_id\": 1\r\n}",
+							"raw": "{\r\n    \"title\": \"Harry Potter and the Prisoner of Azkaban\",\r\n    \"genre\": \"Classic\",\r\n    \"year_published\": 2025,\r\n    \"book_status\": \"loaned\",\r\n    \"author_id\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -410,7 +479,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8085/books/7",
+							"raw": "http://localhost:8085/books/28",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -418,28 +487,7 @@
 							"port": "8085",
 							"path": [
 								"books",
-								"7"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get All Books By Author ID",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8085/books/author/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8085",
-							"path": [
-								"books",
-								"author",
-								"1"
+								"28"
 							]
 						}
 					},
@@ -451,15 +499,15 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8085/books/7",
+							"raw": "http://localhost:8085/book/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8085",
 							"path": [
-								"books",
-								"7"
+								"book",
+								"1"
 							]
 						}
 					},
@@ -471,15 +519,15 @@
 						"method": "PATCH",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8085/books/28",
+							"raw": "http://localhost:8085/book/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8085",
 							"path": [
-								"books",
-								"28"
+								"book",
+								"2"
 							]
 						}
 					},

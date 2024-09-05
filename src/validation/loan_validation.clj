@@ -2,7 +2,7 @@
   (:require [clojure.spec.alpha :as s]
             [service.loan_service :as loan-service]
             [service.user_service :as user-service]
-            [service.books_service :as book-service]))
+            [service.book_service :as book-service]))
 
 (defn valid-year? [date]
   (re-matches #"\d{4}-\d{2}-\d{2}" date))
