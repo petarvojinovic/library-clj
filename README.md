@@ -2,127 +2,124 @@
 
 ## Overview
 
-This application is a CRUD system designed to manage a library. The system allows you to manage authors, books, members, and book loans. Each book is associated with an author, and each member can have one or more books on loan. The application is built using Clojure and utilizes a MySQL database for data storage.
-
-### Key Features:
-- Create, update, view, and delete authors.
-- Create, update, view, and delete books.
-- Create, update, view, and delete library members.
-- Manage book loans, including tracking loan dates and return dates.
+This application is a CRUD system designed to manage a library. The system allows you to manage authors, books, users, and book loans. Each book is associated with an author, and each user can have one or more books on loan. The application is built using Clojure and utilizes a MySQL database for data storage.
 
 ## Relational Model
 
 ### Tables and Attributes
 
-#### Authors
+#### Author
 | Column Name   | Data Type    | Description                        |
 |---------------|--------------|------------------------------------|
 | `id`          | INT          | Primary Key, Auto-Increment        |
 | `name`        | VARCHAR(100) | Name of the author                 |
 | `birth_year`  | INT          | Birth year of the author           |
 
-#### Books
+#### Book
 | Column Name     | Data Type    | Description                            |
 |-----------------|--------------|----------------------------------------|
 | `id`            | INT          | Primary Key, Auto-Increment            |
 | `title`         | VARCHAR(200) | Title of the book                      |
 | `genre`         | VARCHAR(100) | Genre of the book                      |
 | `year_published`| INT          | Year the book was published            |
+| `book_status`   | VARCHAR(100) | Status of the book (`available`, `loaned`) |
 | `author_id`     | INT          | Foreign Key referencing `authors(id)`  |
 
-#### Members
-| Column Name        | Data Type    | Description                        |
-|--------------------|--------------|------------------------------------|
-| `id`               | INT          | Primary Key, Auto-Increment        |
-| `name`             | VARCHAR(100) | Name of the member                 |
-| `email`            | VARCHAR(100) | Email of the member                |
-| `phone`            | VARCHAR(15)  | Phone number of the member         |
-| `membership_start` | DATE         | Start date of the membership       |
-| `membership_end`   | DATE         | End date of the membership         |
+#### Member
+| Column Name        | Data Type    | Description                                  |
+|--------------------|--------------|----------------------------------------------|
+| `id`               | INT          | Primary Key, Auto-Increment                  |
+| `username`         | VARCHAR(100) | Username of the user                         |
+| `password`         | VARCHAR(100) | Password for the user's account              |
+| `name`             | VARCHAR(100) | Name of the user                             |
+| `email`            | VARCHAR(100) | Email of the user                            |
+| `phone`            | VARCHAR(15)  | Phone number of the user                     |
+| `role`             | VARCHAR(50)  | Role of the user (`member`, `administrator`) |
+| `membership_type`  | VARCHAR(50)  | Type of membership (`monthly`, `yearly`)     |
 
 #### Loans
-| Column Name  | Data Type | Description                               |
-|--------------|-----------|-------------------------------------------|
-| `member_id`  | INT       | Foreign Key referencing `members(id)`     |
-| `book_id`    | INT       | Foreign Key referencing `books(id)`       |
-| `loan_date`  | DATE      | Date the book was loaned                  |
-| `return_date`| DATE      | Date the book was returned                |
-| Primary Key  | (member_id, book_id) | Composite key combining `member_id` and `book_id` |
+| Column Name  | Data Type | Description                                               |
+|--------------|-----------|-----------------------------------------------------------|
+| `user_id`    | INT       | Foreign Key referencing `members(id)`                     |
+| `book_id`    | INT       | Foreign Key referencing `books(id)`                       |
+| `loan_date`  | DATE      | Date the book was loaned                                  |
+| `return_date`| DATE      | Date the book was returned or null if the date is not set |
+| Primary Key  | (user_id, book_id) | Composite key combining `user_id` and `book_id`           |
 
-### Relationships
-
-- **Authors to Books**: One-to-Many relationship (An author can write multiple books).
-- **Books to Loans**: One-to-Many relationship (A book can be loaned multiple times).
-- **Members to Loans**: One-to-Many relationship (A member can loan multiple books).
-
+ 
 ## API Endpoints
 
-This project includes a Postman collection, `Library.postman_collection.json`, 
-that can be used to test all API endpoints. Below is a description of the available endpoints:
+This project includes a Postman collection, `Library.postman_collection.json`, that can be used to test all API endpoints. Below is a description of the available endpoints:
 
 ### Authors
-- **GET /authors**
-    - Retrieves a list of all authors.
+- **GET /author**
+  - Retrieves a list of all authors.
 
-- **GET /authors/:id**
-    - Retrieves information about an author by their ID.
+- **GET /author/:id**
+  - Retrieves information about an author by their ID.
 
-- **POST /authors**
-    - Creates a new author with the provided data (name and birth year).
+- **POST /author**
+  - Creates a new author with the provided data (name and birth year).
 
-- **PUT /authors/:id**
-    - Updates the data of an author by their ID.
+- **PUT /author/:id**
+  - Updates the data of an author by their ID.
 
-- **DELETE /authors/:id**
-    - Deletes an author and all their books by their ID.
+- **DELETE /author/:id**
+  - Deletes an author and all their books by their ID.
 
 ### Books
-- **GET /books**
-    - Retrieves a list of all books.
+- **GET /book**
+  - Retrieves a list of all books.
 
-- **GET /books/:id**
-    - Retrieves information about a book by its ID.
+- **GET /book/:id**
+  - Retrieves information about a book by its ID.
 
-- **GET /authors/:id/books**
-    - Retrieves all books by a specific author by their ID.
+- **GET /book/author/:author_id**
+  - Retrieves all books by a specific author by their ID.
 
-- **POST /books**
-    - Creates a new book with the provided data (title, genre, year published, author ID).
+- **POST /book**
+  - Creates a new book with the provided data (title, genre, year published, book status, author ID).
 
-- **PUT /books/:id**
-    - Updates the data of a book by its ID.
+- **PUT /book/:id**
+  - Updates the data of a book by its ID.
 
-- **DELETE /books/:id**
-    - Deletes a book by its ID.
+- **PATCH /book/:id**
+  - Updates the book's status to `available`.
+
+- **DELETE /book/:id**
+  - Deletes a book by its ID.
 
 ### Members
-- **GET /members**
-    - Retrieves a list of all members.
+- **GET /member**
+  - Retrieves a list of all members.
 
-- **GET /members/:id**
-    - Retrieves information about a member by their ID.
+- **GET /member/:id**
+  - Retrieves information about a member by their ID.
 
-- **POST /members**
-    - Creates a new member with the provided data (name, email, phone, membership start date, membership end date).
+- **POST /member**
+  - Creates a new member with the provided data (name, email, phone, membership start date, membership end date).
 
-- **PUT /members/:id**
-    - Updates the data of a member by their ID.
+- **PUT /member/:id**
+  - Updates the data of a member by their ID.
 
-- **DELETE /members/:id**
-    - Deletes a member by their ID.
+- **DELETE /member/:id**
+  - Deletes a member by their ID.
 
 ### Loans
-- **GET /loans**
-    - Retrieves a list of all loans.
+- **GET /loan**
+  - Retrieves a list of all loans.
 
-- **GET /loans/:member_id/:book_id**
-    - Retrieves information about a loan by the member ID and book ID.
+- **GET /loan/:member_id/:book_id**
+  - Retrieves information about a loan by the member ID and book ID.
 
-- **POST /loans**
-    - Creates a new loan with the provided data (member ID, book ID, loan date).
+- **POST /loan**
+  - Creates a new loan with the provided data (member ID, book ID, loan date). If the book is already loaned, the loan cannot be created.
 
-- **PUT /loans/:member_id/:book_id**
-    - Updates the return date of a loan by the member ID and book ID.
+- **PATCH /loan/:member_id/:book_id**
+  - Updates the return date of a loan by the member ID and book ID.
+
+- **DELETE /loan/:member_id/:book_id**
+  - Deletes a loan by the member ID and book ID.
 
 ## Setup Instructions
 
