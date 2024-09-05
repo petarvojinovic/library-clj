@@ -54,3 +54,12 @@
       {:status :ok :message "Book deleted successfully"})
     {:status :error :message "Book not found"}))
 
+(defn set-book-status-available [id]
+  (if (book-exists? id)
+    (do
+      (jdbc/execute! db
+                     ["UPDATE book SET book_status = 'available' WHERE id = ?" id])
+      {:status :ok :message "Book returned and available to loan again"})
+    {:status :error :message "Book not found"}))
+
+

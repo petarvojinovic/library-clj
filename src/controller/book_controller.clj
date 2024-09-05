@@ -1,6 +1,6 @@
 (ns controller.book_controller
   (:require [ring.util.response :as response]
-            [compojure.core :refer [defroutes GET POST PUT DELETE]]
+            [compojure.core :refer [defroutes GET POST PUT DELETE PATCH]]
             [service.book_service :as book-service]
             [cheshire.core :as json]
             [validation.book_validation :as validation]))
@@ -50,4 +50,10 @@
              (let [delete-result (book-service/delete-book id)]
                (if (= :ok (:status delete-result))
                  (response/response (serialize-to-pretty-json delete-result))
-                 (response/status (response/response (serialize-to-pretty-json delete-result)) 404)))))
+                 (response/status (response/response (serialize-to-pretty-json delete-result)) 404))))
+
+           (PATCH "/book/:id" [id]
+                  (let [update-result (book-service/set-book-status-available id)]
+                    (if (= :ok (:status update-result))
+                      (response/response (serialize-to-pretty-json update-result))
+                      (response/status (response/response (serialize-to-pretty-json update-result)) 404)))))
