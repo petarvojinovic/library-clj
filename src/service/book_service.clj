@@ -6,7 +6,7 @@
 (def db (edn/read-string (slurp "configuration/db.edn")))
 
 (defn author-exists? [author_id]
-  (not (empty? (jdbc/query db ["SELECT 1 FROM authors WHERE id = ?" author_id]))))
+  (not (empty? (jdbc/query db ["SELECT 1 FROM author WHERE id = ?" author_id]))))
 
 (defn book-exists? [id]
   (not (empty? (jdbc/query db ["SELECT 1 FROM book WHERE id = ?" id]))))
@@ -37,11 +37,15 @@
                   title genre year_published book_status author_id]))
 
 (defn update-book [id title genre year_published book_status author_id]
-  (jdbc/execute! db
-                 ["UPDATE book
-                  SET title = ?, genre = ?, year_published = ?, book_status = ?, author_id = ?
-                  WHERE id = ?"
-                  title genre year_published book_status author_id id]))
+  (if (book-exists? id)
+    (do
+      (jdbc/execute! db
+                     ["UPDATE book
+                      SET title = ?, genre = ?, year_published = ?, book_status = ?, author_id = ?
+                      WHERE id = ?"
+                      title genre year_published book_status author_id id])
+      {:status :ok :message "Book updated successfully"})
+    {:status :error :message "Book not found"}))
 
 (defn delete-book [id]
   (if (book-exists? id)

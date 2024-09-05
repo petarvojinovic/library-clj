@@ -8,9 +8,9 @@
 "DROP TABLE IF EXISTS `loans`;",
 "DROP TABLE IF EXISTS `book`;",
 "DROP TABLE IF EXISTS `user`;",
-"DROP TABLE IF EXISTS `authors`;",
+"DROP TABLE IF EXISTS `author`;",
 
-"CREATE TABLE `authors` (
+"CREATE TABLE `author` (
   `id` INT AUTO_INCREMENT,
   `name` VARCHAR(100) NOT NULL,
   `birth_year` INT,
@@ -25,7 +25,7 @@
   `book_status` VARCHAR(100),
   `author_id` INT,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`author_id`) REFERENCES `authors`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY (`author_id`) REFERENCES `author`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8;",
 
 "CREATE TABLE `user` (
@@ -50,11 +50,11 @@
   FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8;",
 
-"INSERT INTO `authors` (`name`, `birth_year`) VALUES ('J.K. Rowling', 1965);",
-"INSERT INTO `authors` (`name`, `birth_year`) VALUES ('George Orwell', 1903);",
-"INSERT INTO `authors` (`name`, `birth_year`) VALUES ('Agatha Christie', 1890);",
-"INSERT INTO `authors` (`name`, `birth_year`) VALUES ('J.R.R. Tolkien', 1892);",
-"INSERT INTO `authors` (`name`, `birth_year`) VALUES ('F. Scott Fitzgerald', 1896);",
+"INSERT INTO `author` (`name`, `birth_year`) VALUES ('J.K. Rowling', 1965);",
+"INSERT INTO `author` (`name`, `birth_year`) VALUES ('George Orwell', 1903);",
+"INSERT INTO `author` (`name`, `birth_year`) VALUES ('Agatha Christie', 1890);",
+"INSERT INTO `author` (`name`, `birth_year`) VALUES ('J.R.R. Tolkien', 1892);",
+"INSERT INTO `author` (`name`, `birth_year`) VALUES ('F. Scott Fitzgerald', 1896);",
 
 "INSERT INTO `book` (`title`, `genre`, `year_published`, `book_status`, `author_id`) VALUES ('Harry Potter and the Philosopher''s Stone', 'Fantasy', 1997, 'loaned', 1);",
 "INSERT INTO `book` (`title`, `genre`, `year_published`, `book_status`, `author_id`) VALUES ('1984', 'Dystopian', 1949, 'loaned', 2);",

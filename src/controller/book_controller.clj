@@ -39,10 +39,12 @@
 
            (PUT "/book/:id" request
              (let [json-parsed (:body request)
-                   book-id (-> request :params :id)]
-               (let [{:keys [title genre year_published book_status author_id]} json-parsed]
-                 (book-service/update-book book-id title genre year_published book_status author_id)
-                 (response/response "Book updated successfully"))))
+                   book-id (-> request :params :id)
+                   {:keys [title genre year_published book_status author_id]} json-parsed
+                   update-result (book-service/update-book book-id title genre year_published book_status author_id)]
+               (if (= :ok (:status update-result))
+                 (response/response (serialize-to-pretty-json update-result))
+                 (response/status (response/response (serialize-to-pretty-json update-result)) 404))))
 
            (DELETE "/book/:id" [id]
              (let [delete-result (book-service/delete-book id)]

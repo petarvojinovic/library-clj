@@ -27,25 +27,24 @@
                  (response/status (response/response (:message books)) 404))))
 
            (POST "/author" request
-             (let [json-parsed (:body request)
-                   validation-result (validation/validate-author json-parsed)]
-               (if (= :ok (:status validation-result))
-                 (let [{:keys [name birth_year]} json-parsed
-                       creation-result (author-service/create-author {:name name :birth_year birth_year})]
-                   (response/response (serialize-to-pretty-json creation-result)))
-                 (response/status (response/response (serialize-to-pretty-json validation-result)) 400))))
+             (let [json-parsed (:body request)]
+               (let [{:keys [name birth_year]} json-parsed
+                     validation-result (validation/validate-author json-parsed)]
+                 (if (= :ok (:status validation-result))
+                   (do
+                     (author-service/create-author name birth_year)
+                     (response/response (serialize-to-pretty-json {:message "Author created successfully"})))
+                   (response/status
+                     (response/response (serialize-to-pretty-json validation-result)) 400)))))
 
            (PUT "/author/:id" request
              (let [json-parsed (:body request)
-                   validation-result (validation/validate-author json-parsed)
-                   author-id (-> request :params :id)]
-               (if (= :ok (:status validation-result))
-                 (let [{:keys [name birth_year]} json-parsed
-                       update-result (author-service/update-author author-id {:name name :birth_year birth_year})]
-                   (if (= :ok (:status update-result))
-                     (response/response (serialize-to-pretty-json update-result))
-                     (response/status (response/response (serialize-to-pretty-json update-result)) 404)))
-                 (response/status (response/response (serialize-to-pretty-json validation-result)) 400))))
+                   author-id (-> request :params :id)
+                   {:keys [name birth_year]} json-parsed
+                   update-result (author-service/update-author author-id name birth_year)]
+               (if (= :ok (:status update-result))
+                 (response/response (serialize-to-pretty-json update-result))
+                 (response/status (response/response (serialize-to-pretty-json update-result)) 404))))
 
            (DELETE "/author/:id" [id]
              (let [delete-result (author-service/delete-author id)]
