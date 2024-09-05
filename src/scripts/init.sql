@@ -5,7 +5,7 @@
 
 "USE `library`;",
 
-"DROP TABLE IF EXISTS `loans`;",
+"DROP TABLE IF EXISTS `loan`;",
 "DROP TABLE IF EXISTS `book`;",
 "DROP TABLE IF EXISTS `user`;",
 "DROP TABLE IF EXISTS `author`;",
@@ -40,7 +40,7 @@
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8;",
 
-"CREATE TABLE `loans` (
+"CREATE TABLE `loan` (
   `user_id` INT,
   `book_id` INT,
   `loan_date` DATE NOT NULL,
@@ -83,10 +83,10 @@
 "INSERT INTO `user` (`username`, `password`, `name`, `email`, `phone`, `role`, `membership_type`) VALUES ('velicko', 'velicko123', 'Stefan Velickovic', 'stefan.velickovic@yahoo.com', '063-333-3333', 'member', 'monthly');",
 "INSERT INTO `user` (`username`, `password`, `name`, `email`, `phone`, `role`, `membership_type`) VALUES ('andja', 'andja123', 'Andjela Belosevac', 'andjela.belosevac@yahoo.com', '069-444-4444', 'member', 'yearly');",
 
-"INSERT INTO `loans` (`user_id`, `book_id`, `loan_date`, `return_date`) VALUES (1, 1, '2024-08-01', NULL);",
-"INSERT INTO `loans` (`user_id`, `book_id`, `loan_date`, `return_date`) VALUES (2, 2, '2024-08-05', '2024-08-15');",
-"INSERT INTO `loans` (`user_id`, `book_id`, `loan_date`, `return_date`) VALUES (3, 3, '2024-08-10', '2024-08-20');",
-"INSERT INTO `loans` (`user_id`, `book_id`, `loan_date`, `return_date`) VALUES (4, 5, '2024-08-12', NULL);",
-"INSERT INTO `loans` (`user_id`, `book_id`, `loan_date`, `return_date`) VALUES (1, 4, '2024-08-15', NULL);"
+"INSERT INTO `loan` (`user_id`, `book_id`, `loan_date`, `return_date`) VALUES (1, 1, '2024-08-01', NULL);",
+"INSERT INTO `loan` (`user_id`, `book_id`, `loan_date`, `return_date`) VALUES (2, 2, '2024-08-05', '2024-08-15');",
+"INSERT INTO `loan` (`user_id`, `book_id`, `loan_date`, `return_date`) VALUES (3, 3, '2024-08-10', '2024-08-20');",
+"INSERT INTO `loan` (`user_id`, `book_id`, `loan_date`, `return_date`) VALUES (4, 5, '2024-08-12', NULL);",
+"INSERT INTO `loan` (`user_id`, `book_id`, `loan_date`, `return_date`) VALUES (1, 4, '2024-08-15', NULL);"
 
 ]

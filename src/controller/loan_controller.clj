@@ -47,7 +47,7 @@
                  (response/response (serialize-to-pretty-json delete-result))
                  (response/status (response/response (serialize-to-pretty-json delete-result)) 404))))
 
-           (PATCH "/loan/:user_id/:book_id" [user_id book_id return_date]
+           (PATCH "/loan/update/:user_id/:book_id" [user_id book_id return_date]
                   (let [update-result (loan-service/change-loan-return-date user_id book_id return_date)]
                     (if (= :ok (:status update-result))
                       (response/response (serialize-to-pretty-json update-result))
