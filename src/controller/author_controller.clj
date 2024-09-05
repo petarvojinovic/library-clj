@@ -1,45 +1,54 @@
 (ns controller.author_controller
   (:require [ring.util.response :as response]
             [compojure.core :refer [defroutes GET POST PUT DELETE]]
-            [service.author_service :as authors-service]
-            [cheshire.core :as json]))
+            [service.author_service :as author-service]
+            [cheshire.core :as json]
+            [validation.author_validation :as validation]))
 
 (defn serialize-to-pretty-json [data]
   (json/generate-string data {:pretty true}))
 
 (defroutes author-routes
            (GET "/author" []
-             (let [authors (authors-service/get-all-authors)
+             (let [authors (author-service/get-all-authors)
                    json-string (serialize-to-pretty-json authors)]
                (response/response json-string)))
 
            (GET "/author/:id" [id]
-             (let [author (authors-service/get-author-by-id id)
-                   json-string (serialize-to-pretty-json author)]
-               (response/response json-string)))
+             (let [author (author-service/get-author-by-id id)]
+               (if (= :ok (:status author))
+                 (response/response (serialize-to-pretty-json (:data author)))
+                 (response/status (response/response (:message author)) 404))))
+
+           (GET "/author/:id/books" [id]
+             (let [books (author-service/get-books-by-author-id id)]
+               (if (= :ok (:status books))
+                 (response/response (serialize-to-pretty-json (:data books)))
+                 (response/status (response/response (:message books)) 404))))
 
            (POST "/author" request
              (let [json-parsed (:body request)
-                   creation-result (authors-service/create-author json-parsed)]
-               (if (= :ok (:status creation-result))
-                 (response/response (serialize-to-pretty-json creation-result))
-                 (response/status (response/response (serialize-to-pretty-json creation-result)) 400))))
+                   validation-result (validation/validate-author json-parsed)]
+               (if (= :ok (:status validation-result))
+                 (let [{:keys [name birth_year]} json-parsed
+                       creation-result (author-service/create-author {:name name :birth_year birth_year})]
+                   (response/response (serialize-to-pretty-json creation-result)))
+                 (response/status (response/response (serialize-to-pretty-json validation-result)) 400))))
 
            (PUT "/author/:id" request
              (let [json-parsed (:body request)
-                   author-id (-> request :params :id)
-                   update-result (authors-service/update-author author-id json-parsed)]
-               (if (= :ok (:status update-result))
-                 (response/response (serialize-to-pretty-json update-result))
-                 (response/status (response/response (serialize-to-pretty-json update-result)) 400))))
+                   validation-result (validation/validate-author json-parsed)
+                   author-id (-> request :params :id)]
+               (if (= :ok (:status validation-result))
+                 (let [{:keys [name birth_year]} json-parsed
+                       update-result (author-service/update-author author-id {:name name :birth_year birth_year})]
+                   (if (= :ok (:status update-result))
+                     (response/response (serialize-to-pretty-json update-result))
+                     (response/status (response/response (serialize-to-pretty-json update-result)) 404)))
+                 (response/status (response/response (serialize-to-pretty-json validation-result)) 400))))
 
            (DELETE "/author/:id" [id]
-             (let [delete-result (authors-service/delete-author id)]
+             (let [delete-result (author-service/delete-author id)]
                (if (= :ok (:status delete-result))
                  (response/response (serialize-to-pretty-json delete-result))
-                 (response/status (response/response (serialize-to-pretty-json delete-result)) 404))))
-
-           (GET "/author/:id/books" [id]
-             (let [books (authors-service/get-books-by-author-id id)
-                   json-string (serialize-to-pretty-json books)]
-               (response/response json-string))))
+                 (response/status (response/response (serialize-to-pretty-json delete-result)) 404)))))
